@@ -1,7 +1,0 @@
-{
-  "componentsDir": "ui/components",
-  "utilsDir": "utils",
-  "moduleName": "github.com/templui/templui-quickstart",
-  "jsDir": "assets/js/components",
-  "jsPublicPath": "assets/js/components"
-}

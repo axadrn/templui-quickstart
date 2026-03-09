@@ -1,8 +1,8 @@
 package modules
 
 import (
-	"github.com/templui/templui-quickstart/ui/components/button"
-	"github.com/templui/templui-quickstart/ui/components/icon"
+	"github.com/templui/templui/components/button"
+	"github.com/templui/templui/components/icon"
 )
 
 type ThemeSwitcherProps struct {
@@ -16,59 +16,47 @@ templ ThemeSwitcher(props ...ThemeSwitcherProps) {
 	}
 	<script nonce={ templ.GetNonce(ctx) }>
 		(function() {
-			// Get current theme preference (system, light, or dark)
 			function getThemePreference() {
 				return localStorage.getItem('themePreference') || 'system';
 			}
 
-			// Apply theme based on preference
 			function applyTheme() {
 				const preference = getThemePreference();
 				let isDark = false;
 
 				if (preference === 'system') {
-					// Use system preference
 					isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 				} else {
-					// Use explicit preference
 					isDark = preference === 'dark';
 				}
 
 				document.documentElement.classList.toggle('dark', isDark);
-				
-				// Dispatch event for compatibility
 				document.dispatchEvent(new CustomEvent('theme-changed'));
 			}
 
-			// Toggle between light and dark (system only on initial state)
 			function cycleTheme() {
 				const current = getThemePreference();
 				let next;
-				
+
 				if (current === 'system') {
-					// First click from system state - determine based on current appearance
 					const isDarkNow = window.matchMedia('(prefers-color-scheme: dark)').matches;
 					next = isDarkNow ? 'light' : 'dark';
 				} else {
-					// Toggle between light and dark
 					next = current === 'light' ? 'dark' : 'light';
 				}
-				
+
 				localStorage.setItem('themePreference', next);
 				applyTheme();
 			}
 
-			// Initialize theme
 			applyTheme();
 
-			// Listen for system theme changes
 			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
 				if (getThemePreference() === 'system') {
 					applyTheme();
 				}
 			});
 
-			// Use event delegation for click handling
 			document.addEventListener('click', (e) => {
 				const themeSwitcher = e.target.closest('[data-theme-switcher]');
 				if (themeSwitcher) {
@@ -86,6 +74,6 @@ templ ThemeSwitcher(props ...ThemeSwitcherProps) {
 			"data-theme-switcher": "true",
 		},
 	}) {
-		@icon.Eclipse(icon.Props{Size: 20})
+		@icon.Eclipse(icon.Props{Class: "size-5"})
 	}
 }

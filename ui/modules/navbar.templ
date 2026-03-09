@@ -1,19 +1,17 @@
-
 package modules
 
-import "github.com/templui/templui-quickstart/ui/components/icon"
+import "github.com/templui/templui/components/icon"
 
 templ Navbar() {
 	<nav class="py-1">
-		<div class="px-6 flex justify-between items-center relative">
+		<div class="relative flex items-center justify-between px-6">
 			<div class="flex items-center">
-				<!-- @NavbarMobileMenu() -->
 				<a href="/" class="flex items-center gap-1.5">
-					@icon.ToggleLeft(icon.Props{Class: "w-6 h-6"})
+					@icon.ToggleLeft(icon.Props{Class: "h-6 w-6"})
 					<span class="text-xl">templ<span class="font-bold">UI</span></span>
 				</a>
 			</div>
-			<div class="flex gap-1 items-center justify-center">
+			<div class="flex items-center justify-center gap-1">
 				@ThemeSwitcher()
 			</div>
 		</div>

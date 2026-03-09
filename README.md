@@ -1,55 +1,19 @@
-# ⚠️ DEPRECATED
-
-This repository is deprecated. Use the templUI CLI instead:
-
-See https://templui.io for more information.
-
----
-
 # templUI Quickstart
 
-Get started with templUI components for Go + templ.
+This is a ready-to-run quickstart project for templUI.
 
-## Prerequisites
+## Run
 
-- Go 1.25 or higher
-- Node.js (for Tailwind CSS)
-- [Task](https://taskfile.dev) - Cross-platform task runner
-
-## Quick Start
-
-```bash
-git clone https://github.com/templui/templui-quickstart.git my-app
-cd my-app
-
-# Install Task (one-time setup)
-go install github.com/go-task/task/v3/cmd/task@latest
-
-# Start development server
+```sh
+cp .env.example .env
+go mod tidy
 task dev
 ```
 
-Your app is now running at [http://localhost:7331](http://localhost:7331)
+Open `http://localhost:7331` for templ live preview or `http://localhost:8090` for the app.
 
-## Commands
+If you want your own module path later, run:
 
-```bash
-task dev          # Start development server with hot reload
-task templ        # Watch templ files and run server
-task --list       # Show all available tasks
+```sh
+go mod edit -module your/module/path
 ```
-
-## Production
-
-```bash
-docker build -t my-app .
-docker run -p 8090:8090 my-app
-```
-
-## Documentation
-
-Visit [templui.io/docs](https://templui.io/docs) for component documentation.
-
-## License
-
-MIT

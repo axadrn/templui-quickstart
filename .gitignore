@@ -1,7 +1,4 @@
-*_templ.go
-*_templ.txt
-.DS_Store
-bin
-node_modules
-tmp
 .env
+assets/css/output.css
+assets/css/sources.generated.css
+*_templ.go
