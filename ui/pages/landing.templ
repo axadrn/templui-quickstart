@@ -28,6 +28,13 @@ templ Landing() {
 						Documentation
 					}
 					@button.Button(button.Props{
+						Variant: button.VariantSecondary,
+						Href:    "/repro",
+					}) {
+						@icon.Bug(icon.Props{Class: "size-4"})
+						Datastar Repro
+					}
+					@button.Button(button.Props{
 						Variant: button.VariantOutline,
 						Href:    "https://github.com/templui/templui",
 						Target:  "_blank",

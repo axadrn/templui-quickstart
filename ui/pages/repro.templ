@@ -1,0 +1,157 @@
+package pages
+
+import (
+	"fmt"
+	"myapp/ui/layouts"
+
+	"github.com/templui/templui/components/button"
+	"github.com/templui/templui/components/collapsible"
+	"github.com/templui/templui/components/datepicker"
+	"github.com/templui/templui/components/dialog"
+	"github.com/templui/templui/components/selectbox"
+)
+
+templ Repro() {
+	@layouts.BaseLayout() {
+		<script>
+			window.logReproScriptCounts = function () {
+				const files = [
+					"dialog.min.js",
+					"popover.min.js",
+					"selectbox.min.js",
+					"datepicker.min.js",
+					"calendar.min.js",
+					"collapsible.min.js",
+				]
+				const counts = {}
+				for (const file of files) {
+					counts[file] = Array.from(document.scripts).filter((s) => s.src && s.src.includes(file)).length
+				}
+				console.table(counts)
+				return counts
+			}
+		</script>
+		<div class="mx-auto flex w-full max-w-4xl flex-col gap-5 px-4 py-10">
+			<h1 class="text-3xl font-semibold tracking-tight">templUI + Datastar Script Reload Repro</h1>
+			<p class="text-muted-foreground">
+				Open the dialog, click <code>Patch Fragment</code> a few times, then try the selectbox and datepicker.
+				If script tags execute repeatedly during patches, these controls can flicker open and close.
+			</p>
+			<div class="rounded-lg border border-border bg-card p-4 text-sm">
+				<div class="font-medium">Repro steps</div>
+				<ol class="mt-2 list-decimal space-y-1 pl-5 text-muted-foreground">
+					<li>Open the dialog.</li>
+					<li>Click <code>Patch Fragment</code> 3-5 times.</li>
+					<li>Click <code>Log Script Counts</code> and inspect console output.</li>
+					<li>Try opening the selectbox and datepicker.</li>
+				</ol>
+			</div>
+
+			@dialog.Dialog(dialog.Props{ID: "repro-dialog"}) {
+				@dialog.Trigger() {
+					@button.Button(button.Props{Type: button.TypeButton}) {
+						Open Repro Dialog
+					}
+				}
+				@dialog.Content(dialog.ContentProps{Class: "max-w-2xl"}) {
+					@dialog.Header() {
+						@dialog.Title() {
+							Dialog Fragment Repro
+						}
+						@dialog.Description() {
+							This content is patched over SSE using Datastar.
+						}
+					}
+					<div id="repro-fragment-target">
+						@ReproFragment(1)
+					</div>
+				}
+			}
+		</div>
+	}
+}
+
+templ ReproFragment(iteration int) {
+	<div id="repro-fragment-target" class="space-y-4 rounded-md border border-border bg-background p-4">
+		<div class="text-sm text-muted-foreground">
+			Patch iteration: <span class="font-semibold text-foreground">{ fmt.Sprintf("%d", iteration) }</span>
+		</div>
+
+		<div class="flex flex-wrap gap-2">
+			@button.Button(button.Props{
+				Type:    button.TypeButton,
+				Variant: button.VariantDefault,
+				Attributes: templ.Attributes{
+					"data-on:click": fmt.Sprintf("@get('/repro/fragment?iteration=%d')", iteration+1),
+				},
+			}) {
+				Patch Fragment
+			}
+
+			@button.Button(button.Props{
+				Type:    button.TypeButton,
+				Variant: button.VariantOutline,
+				Attributes: templ.Attributes{
+					"onclick": "window.logReproScriptCounts && window.logReproScriptCounts()",
+				},
+			}) {
+				Log Script Counts
+			}
+		</div>
+
+		<div class="grid gap-4 md:grid-cols-2">
+			<div class="space-y-2">
+				<p class="text-sm font-medium">Selectbox</p>
+				@selectbox.SelectBox(selectbox.Props{ID: fmt.Sprintf("repro-selectbox-%d", iteration)}) {
+					@selectbox.Trigger(selectbox.TriggerProps{Name: "repro_fruit"}) {
+						@selectbox.Value(selectbox.ValueProps{Placeholder: "Select a fruit"})
+					}
+					@selectbox.Content() {
+						@selectbox.Group() {
+							@selectbox.Label() {
+								Fruits
+							}
+							@selectbox.Item(selectbox.ItemProps{Value: "apple"}) {
+								Apple
+							}
+							@selectbox.Item(selectbox.ItemProps{Value: "banana"}) {
+								Banana
+							}
+							@selectbox.Item(selectbox.ItemProps{Value: "grapes"}) {
+								Grapes
+							}
+						}
+					}
+				}
+			</div>
+
+			<div class="space-y-2">
+				<p class="text-sm font-medium">Datepicker</p>
+				@datepicker.DatePicker(datepicker.Props{
+					ID:   fmt.Sprintf("repro-datepicker-%d", iteration),
+					Name: "repro_date",
+				})
+			</div>
+		</div>
+
+		@collapsible.Collapsible(collapsible.Props{
+			ID:    fmt.Sprintf("repro-collapsible-%d", iteration),
+			Class: "rounded-md border border-border p-2",
+		}) {
+			@collapsible.Trigger() {
+				@button.Button(button.Props{
+					Type:    button.TypeButton,
+					Variant: button.VariantOutline,
+					Size:    button.SizeSm,
+				}) {
+					Toggle Collapsible
+				}
+			}
+			@collapsible.Content(collapsible.ContentProps{}) {
+				<div class="pt-2 text-sm text-muted-foreground">
+					Collapsible content inside patched dialog fragment.
+				</div>
+			}
+		}
+	</div>
+}
