@@ -1,6 +1,13 @@
 package layouts
 
-import "myapp/ui/modules"
+import (
+	"myapp/ui/modules"
+
+	"github.com/templui/templui/components/collapsible"
+	"github.com/templui/templui/components/datepicker"
+	"github.com/templui/templui/components/dialog"
+	"github.com/templui/templui/components/selectbox"
+)
 
 templ BaseLayout() {
 	<!DOCTYPE html>
@@ -13,6 +20,10 @@ templ BaseLayout() {
 			<title>templUI App</title>
 			<link href="/assets/css/output.css" rel="stylesheet"/>
 			<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.0-RC.8/bundles/datastar.js"></script>
+			@datepicker.Script()
+			@dialog.Script()
+			@selectbox.Script()
+			@collapsible.Script()
 		</head>
 		<body class="h-full">
 			<div class="flex h-full flex-col">

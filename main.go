@@ -13,6 +13,7 @@ import (
 	"github.com/a-h/templ"
 	"github.com/joho/godotenv"
 	datastar "github.com/starfederation/datastar-go/datastar"
+	"github.com/templui/templui/utils"
 )
 
 func main() {
@@ -57,6 +58,8 @@ func setupAssetsRoutes(mux *http.ServeMux) {
 	})
 
 	mux.Handle("GET /assets/", http.StripPrefix("/assets/", assetHandler))
+
+	utils.SetupScriptRoutes(mux, isDevelopment)
 }
 
 func handleReproFragment(w http.ResponseWriter, r *http.Request) {
