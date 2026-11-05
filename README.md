@@ -1,3 +1,8 @@
+> [!WARNING]
+> **templUI is now shadcn-templ.** This quickstart is for templUI v1 and is no longer maintained. Use [github.com/axadrn/shadcn-templ](https://github.com/axadrn/shadcn-templ) instead.
+>
+> This repository is archived and will be deleted in May 2027.
+
 # templUI Quickstart
 
 This is a ready-to-run quickstart project for templUI.
